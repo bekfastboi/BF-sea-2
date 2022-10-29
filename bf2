@@ -1,0 +1,519 @@
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+   wait(1)
+   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+
+    local Window = Rayfield:CreateWindow({
+        Name = "Dreps Hub | Blox Fruits",
+        LoadingTitle = "Dreps Hub | Loading...",
+        LoadingSubtitle = "by Drep",
+        ConfigurationSaving = {
+            Enabled = true,
+            FileName = "Big Hub",
+        },
+        KeySystem = false, -- Set this to true to use our key system
+        KeySettings = {
+            Title = "Sirius Hub",
+            Subtitle = "Key System",
+            Note = "Join the discord (discord.gg/sirius)",
+            Key = "ABCDEF"
+        }
+        })
+
+        local MainTab = Window:CreateTab("Main")
+
+        local HopSection = MainTab:CreateSection("Hop Server")
+
+        local CousinSection = MainTab:CreateSection("Blox Fruit")
+
+        local Toggle = MainTab:CreateToggle({
+            Name = "Auto Blox Fruit Cousin",
+            CurrentValue = false,
+            Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+            Callback = function(Value)
+                
+                
+                local args = {
+                    [1] = "Cousin",
+                    [2] = "Buy"
+                }
+                
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            end,
+        })
+
+       
+        local Button = MainTab:CreateButton({
+            Name = "Hop Server",
+            Callback = function()
+                local PlaceID = 4442272183
+                local AllIDs = {}
+                local foundAnything = ""
+                local actualHour = os.date("!*t").hour
+                local Deleted = false
+                local File = pcall(function()
+                    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+                end)
+                if not File then
+                    table.insert(AllIDs, actualHour)
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                end
+                function TPReturner()
+                    local Site;
+                    if foundAnything == "" then
+                        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+                    else
+                        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+                    end
+                    local ID = ""
+                    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                        foundAnything = Site.nextPageCursor
+                    end
+                    local num = 0;
+                    for i,v in pairs(Site.data) do
+                        local Possible = true
+                        ID = tostring(v.id)
+                        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                            for _,Existing in pairs(AllIDs) do
+                                if num ~= 0 then
+                                    if ID == tostring(Existing) then
+                                        Possible = false
+                                    end
+                                else
+                                    if tonumber(actualHour) ~= tonumber(Existing) then
+                                        local delFile = pcall(function()
+                                            delfile("NotSameServers.json")
+                                            AllIDs = {}
+                                            table.insert(AllIDs, actualHour)
+                                        end)
+                                    end
+                                end
+                                num = num + 1
+                            end
+                            if Possible == true then
+                                table.insert(AllIDs, ID)
+                                wait()
+                                pcall(function()
+                                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                                    wait()
+                                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                                end)
+                                wait(4)
+                            end
+                        end
+                    end
+                end
+                
+                function Teleport()
+                    while wait() do
+                        pcall(function()
+                            TPReturner()
+                            if foundAnything ~= "" then
+                                TPReturner()
+                            end
+                        end)
+                    end
+                end
+                
+                -- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+                Teleport()
+            end,
+        })
+        
+        local Button = MainTab:CreateButton({
+            Name = "Teleport to Sea 3",
+            Callback = function()
+                local PlaceID = 7449423635
+                local AllIDs = {}
+                local foundAnything = ""
+                local actualHour = os.date("!*t").hour
+                local Deleted = false
+                local File = pcall(function()
+                    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+                end)
+                if not File then
+                    table.insert(AllIDs, actualHour)
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                end
+                function TPReturner()
+                    local Site;
+                    if foundAnything == "" then
+                        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+                    else
+                        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+                    end
+                    local ID = ""
+                    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                        foundAnything = Site.nextPageCursor
+                    end
+                    local num = 0;
+                    for i,v in pairs(Site.data) do
+                        local Possible = true
+                        ID = tostring(v.id)
+                        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                            for _,Existing in pairs(AllIDs) do
+                                if num ~= 0 then
+                                    if ID == tostring(Existing) then
+                                        Possible = false
+                                    end
+                                else
+                                    if tonumber(actualHour) ~= tonumber(Existing) then
+                                        local delFile = pcall(function()
+                                            delfile("NotSameServers.json")
+                                            AllIDs = {}
+                                            table.insert(AllIDs, actualHour)
+                                        end)
+                                    end
+                                end
+                                num = num + 1
+                            end
+                            if Possible == true then
+                                table.insert(AllIDs, ID)
+                                wait()
+                                pcall(function()
+                                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                                    wait()
+                                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                                end)
+                                wait(4)
+                            end
+                        end
+                    end
+                end
+                
+                function Teleport()
+                    while wait() do
+                        pcall(function()
+                            TPReturner()
+                            if foundAnything ~= "" then
+                                TPReturner()
+                            end
+                        end)
+                    end
+                end
+                
+                -- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+                Teleport()
+            end,
+        })
+
+        local Button = MainTab:CreateButton({
+            Name = "Teleport to Sea 1",
+            Callback = function()
+                local PlaceID = 2753915549  
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+if not File then
+    table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+function TPReturner()
+    local Site;
+    if foundAnything == "" then
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+    else
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+    end
+    local ID = ""
+    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+        foundAnything = Site.nextPageCursor
+    end
+    local num = 0;
+    for i,v in pairs(Site.data) do
+        local Possible = true
+        ID = tostring(v.id)
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+            for _,Existing in pairs(AllIDs) do
+                if num ~= 0 then
+                    if ID == tostring(Existing) then
+                        Possible = false
+                    end
+                else
+                    if tonumber(actualHour) ~= tonumber(Existing) then
+                        local delFile = pcall(function()
+                            delfile("NotSameServers.json")
+                            AllIDs = {}
+                            table.insert(AllIDs, actualHour)
+                        end)
+                    end
+                end
+                num = num + 1
+            end
+            if Possible == true then
+                table.insert(AllIDs, ID)
+                wait()
+                pcall(function()
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                    wait()
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                end)
+                wait(4)
+            end
+        end
+    end
+end
+
+function Teleport()
+    while wait() do
+        pcall(function()
+            TPReturner()
+            if foundAnything ~= "" then
+                TPReturner()
+            end
+        end)
+    end
+end
+
+-- If you'd like to use a script before server hopping (Like a Automatic Chest collector you can put the Teleport() after it collected everything.
+Teleport()
+            end,
+        })
+
+        local LocalTab = Window:CreateTab("Local Tab")
+   
+        local LocalSection = LocalTab:CreateSection("Teleports")
+    
+        local Label = LocalTab:CreateLabel("Script will reset when done teleporting, don't hold any items/fruits")
+
+
+        local Button = LocalTab:CreateButton({
+            Name = "Cafe",
+            Callback = function()
+                -- The function that takes place when the button is pressed
+        
+                    function teleportTO(placeCFrame)  -- teleport script
+                        local plyr = game.Players.LocalPlayer
+                        if plyr.Character then
+                         plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+                        end
+                    end
+                    teleportTO(CFrame.new(-286.377, 306.156, 598.503)) -- portal coords (works with sky portal and fish portal)
+                   
+                   wait(0.1)
+                    local teleport_table = {
+                        location1 = Vector3.new(-464.329, 73.056, 323.955), -- your desired position
+                       
+                    }
+                    
+                    local tween_s = game:GetService('TweenService')
+                    local tweeninfo = TweenInfo.new(2,Enum.EasingStyle.Linear)
+                    
+                    local lp = game.Players.LocalPlayer
+                    
+                    function bypass_teleport(v)
+                        if lp.Character and 
+                        lp.Character:FindFirstChild('HumanoidRootPart') then
+                            local cf = CFrame.new(v)
+                            local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                            a:Play()
+                         
+                        end
+                    end
+                    
+                    bypass_teleport(teleport_table.location1)
+        
+                end,
+        })
+    
+        local Button = LocalTab:CreateButton({
+            Name = "Colosseum",
+            Callback = function()
+                local teleport_table = {
+                    location1 = Vector3.new(-1837.636, 44.318, 1627.762), -- your desired position
+                    
+                }
+                
+                local tween_s = game:GetService('TweenService')
+                local tweeninfo = TweenInfo.new(13,Enum.EasingStyle.Linear)
+                
+                local lp = game.Players.LocalPlayer
+                
+                function bypass_teleport(v)
+                    if lp.Character and 
+                    lp.Character:FindFirstChild('HumanoidRootPart') then
+                        local cf = CFrame.new(v)
+                        local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                        a:Play()
+                        -- a.Completed:Wait()
+                        -- print('Teleporting Done!')
+                    end
+                end
+                
+                bypass_teleport(teleport_table.location1)
+            end,
+        })
+
+        local Button = LocalTab:CreateButton({
+            Name = "Graveyard",
+            Callback = function()
+                function teleportTO(placeCFrame)  -- teleport script
+                    local plyr = game.Players.LocalPlayer
+                    if plyr.Character then
+                     plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+                    end
+                end
+                teleportTO(CFrame.new(-6505.124, 83.213, -125.028)) -- portal coords (works with sky portal and fish portal)
+          
+                local teleport_table = {
+                    location1 = Vector3.new(-5326.352, 6.855, -707.299), -- your desired position
+                    location2 = Vector3.new()  -- your desired position
+                }
+                
+                local tween_s = game:GetService('TweenService')
+                local tweeninfo = TweenInfo.new(3,Enum.EasingStyle.Linear)
+                
+                local lp = game.Players.LocalPlayer
+                
+                function bypass_teleport(v)
+                    if lp.Character and 
+                    lp.Character:FindFirstChild('HumanoidRootPart') then
+                        local cf = CFrame.new(v)
+                        local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                        a:Play()
+                        -- a.Completed:Wait()
+                        -- print('Teleporting Done!')
+                    end
+                end
+                
+                bypass_teleport(teleport_table.location1)
+
+            end,
+
+            
+        })
+
+        local Button = LocalTab:CreateButton({
+            Name = "Skull Island",
+            Callback = function()
+                local teleport_table = {
+                    location1 = Vector3.new(-2822.561, 6.255, -9466.101), -- your desired position
+                   
+                }
+                
+                local tween_s = game:GetService('TweenService')
+                local tweeninfo = TweenInfo.new(14,Enum.EasingStyle.Linear)
+                
+                local lp = game.Players.LocalPlayer
+                
+                function bypass_teleport(v)
+                    if lp.Character and 
+                    lp.Character:FindFirstChild('HumanoidRootPart') then
+                        local cf = CFrame.new(v)
+                        local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                        a:Play()
+                   a.Completed:Wait()
+                     game.Players.LocalPlayer.Character.Humanoid.Health = 0
+                    end
+                end
+                
+                bypass_teleport(teleport_table.location1)
+            end,
+        })
+
+        local Button = LocalTab:CreateButton({
+            Name = "Snow Mountain",
+            Callback = function()
+                local teleport_table = {
+                    location1 = Vector3.new(-91.134, 8.502, -4977.578), -- your desired position
+                   
+                }
+                
+                local tween_s = game:GetService('TweenService')
+                local tweeninfo = TweenInfo.new(14,Enum.EasingStyle.Linear)
+                
+                local lp = game.Players.LocalPlayer
+                
+                function bypass_teleport(v)
+                    if lp.Character and 
+                    lp.Character:FindFirstChild('HumanoidRootPart') then
+                        local cf = CFrame.new(v)
+                        local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                        a:Play()
+                        a.Completed:Wait()
+                        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+                    end
+                end
+                
+                bypass_teleport(teleport_table.location1)
+            end,
+        })
+
+        local Button = LocalTab:CreateButton({
+            Name = "Haunted Ship",
+            Callback = function()
+                function teleportTO(placeCFrame)  -- teleport script
+                    local plyr = game.Players.LocalPlayer
+                    if plyr.Character then
+                     plyr.Character.HumanoidRootPart.CFrame = placeCFrame;
+                    end
+                end
+                teleportTO(CFrame.new(918.445, 125.083, 32844.441)) -- portal coords (works with sky portal and fish portal)
+            end,
+            
+        })
+
+        local Button = LocalTab:CreateButton({
+            Name = "Half Hot/Cold",
+            Callback = function()
+                local teleport_table = {
+                    location1 = Vector3.new(-5509.322, 81.978, -5167.351), -- your desired position
+                   
+                }
+                
+                local tween_s = game:GetService('TweenService')
+                local tweeninfo = TweenInfo.new(14,Enum.EasingStyle.Linear)
+                
+                local lp = game.Players.LocalPlayer
+                
+                function bypass_teleport(v)
+                    if lp.Character and 
+                    lp.Character:FindFirstChild('HumanoidRootPart') then
+                        local cf = CFrame.new(v)
+                        local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                        a:Play()
+                        a.Completed:Wait()
+                        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+                    end
+                end
+                
+                bypass_teleport(teleport_table.location1)
+            end,
+        })
+
+
+        local Button = LocalTab:CreateButton({
+            Name = "Winter Castle",
+            Callback = function()
+                local teleport_table = {
+                    location1 = Vector3.new(5551.374, 1.657, -5769.021), -- your desired position
+                   
+                }
+                
+                local tween_s = game:GetService('TweenService')
+                local tweeninfo = TweenInfo.new(14,Enum.EasingStyle.Linear)
+                
+                local lp = game.Players.LocalPlayer
+                
+                function bypass_teleport(v)
+                    if lp.Character and 
+                    lp.Character:FindFirstChild('HumanoidRootPart') then
+                        local cf = CFrame.new(v)
+                        local a = tween_s:Create(lp.Character.HumanoidRootPart,tweeninfo,{CFrame=cf})
+                        a:Play()
+                        a.Completed:Wait()
+                        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+                    end
+                end
+                
+                bypass_teleport(teleport_table.location1)
+            end,
+        })
